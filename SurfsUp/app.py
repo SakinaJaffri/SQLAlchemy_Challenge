@@ -1,17 +1,15 @@
-# Import the dependencies.
-import datetime as dt
 
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
+import datetime as dt  # For handling date and time operations.
+from sqlalchemy.ext.automap import automap_base  # For reflecting database tables.
+from sqlalchemy.orm import Session  # For database session management.
+from sqlalchemy import create_engine, func  # For database connection and query functions.
+from flask import Flask, jsonify  # For creating a Flask application and JSON serialization.
 
-from flask import Flask, jsonify
 
 
 #################################################
 # Database Setup
 #################################################
-
 
 engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
@@ -31,17 +29,14 @@ session = Session(engine)
 #################################################
 # Flask Setup
 #################################################
+app = Flask(__name__) # Initializes Flask application.
 
-app = Flask(__name__)
-
-
-#################################################
-# Flask Routes
-#################################################
+# #################################################
+# # Flask Routes
+# #################################################
 @app.route("/")
-def home():
+def home():  # Handles home route.
     return(
-        f"Welcome<br/>"
         f"Available Routes:<br/>"
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
@@ -50,9 +45,10 @@ def home():
         f"/api/v1.0/<start>/<end>"
         )
 
-# the following route converts the query results from my precipitation analysis\ 
-# (i.e. retrieved only the last 12 months of data) to a dictionary using date as the key and\ 
-# prcp as the value. Finally, it returns the JSON representation of my dictionary.
+# Defines route for precipitation data.
+# Handles precipitation route.
+# Queries precipitation data for last 12 months and returns JSON representation.
+
 @app.route("/api/v1.0/precipitation")
 def precipitation():
 
@@ -69,7 +65,9 @@ def precipitation():
 
     return jsonify(output)
 
-#the following route Returns a JSON list of stations from the dataset.
+# Defines route for weather stations.
+# Handles stations route.
+# Queries weather stations and returns their IDs as JSON list.
 @app.route("/api/v1.0/stations")
 def stations():
 
@@ -82,8 +80,10 @@ def stations():
 
     return jsonify(output)
 
-# the following route queries the dates and temperature observations of the most-active station\
-# for the previous year of data and then returns a JSON list of temperature observations for the previous year.
+# Defines route for temperature observations.
+# Handles temperature observations route.
+# Queries temperature observations for previous year from most active station.
+
 @app.route("/api/v1.0/tobs")
 def tobs():
     results = session.query(Measurement.date, Measurement.tobs).\
@@ -100,10 +100,10 @@ def tobs():
         
     return jsonify(output)
 
-# the following two routes returns a JSON list of the minimum temperature, the average temperature, and\
-# the maximum temperature for a specified start or start-end range.
-# the first route, for a specified start, calculates TMIN, TAVG, and TMAX for all the dates\
-# greater than or equal to the start date.
+# Defines route for temperature stats from start date.
+# Handles temperature stats route with start date.
+# Queries temperature statistics (min, avg, max) from specified start date onwards.
+
 @app.route("/api/v1.0/<start>")
 def start_date(start):
 
@@ -129,8 +129,10 @@ def start_date(start):
     except ValueError:
         return jsonify({"error": "Invalid date format. Please use YYYY-MM-DD."}), 400
 
-# the second route, for a specified start date and end date, calculates TMIN, TAVG, and TMAX \
-# for the dates from the start date to the end date, inclusive.
+# Defines route for temperature stats in date range.
+# Handles temperature stats route with date range.
+# Queries temperature statistics (min, avg, max) for specified date range.
+
 @app.route("/api/v1.0/<start>/<end>")
 def start_end_date(start, end):
 
