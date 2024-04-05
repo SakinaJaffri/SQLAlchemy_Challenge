@@ -1,4 +1,5 @@
 # SQLAlchemy_Challenge
+![image](https://github.com/SakinaJaffri/SQLAlchemy_Challenge/assets/146900226/443dc487-b0a8-40bd-a85c-0ad91c5afe63)
 
 ## Introduction
 
