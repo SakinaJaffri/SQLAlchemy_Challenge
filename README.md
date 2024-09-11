@@ -1,4 +1,4 @@
-# SQLAlchemy Challenge
+# SQLAlchemy Climate Data Analysis
 
 ![Hawaii Climate](https://github.com/SakinaJaffri/SQLAlchemy_Challenge/assets/146900226/443dc487-b0a8-40bd-a85c-0ad91c5afe63)
 
